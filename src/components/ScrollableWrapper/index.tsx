@@ -9,6 +9,7 @@ import { PanResponder, StyleSheet } from "react-native";
 import RefreshControl from "../RefreshControl";
 
 const MAX_PULL_DISTANCE = 70;
+const ANIMATION_DURATION = 200;
 
 export default function ScrollableWrapper({
   children,
@@ -21,13 +22,15 @@ export default function ScrollableWrapper({
   const onPanRelease = useCallback(() => {
     offsetY.set(
       withTiming(isReadyToRefresh.get() ? 50 : 0, {
-        duration: 180,
+        duration: ANIMATION_DURATION,
       })
     );
 
     if (isReadyToRefresh.get()) {
       isReadyToRefresh.set(false);
-      onRefresh(() => offsetY.set(withTiming(0, { duration: 180 })));
+      onRefresh(() =>
+        offsetY.set(withTiming(0, { duration: ANIMATION_DURATION }))
+      );
     }
   }, [isReadyToRefresh]);
 
